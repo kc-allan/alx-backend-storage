@@ -29,7 +29,7 @@ class Cache:
         self._redis.set(id, data)
         return id
 
-    def get(self, key: str, fn: Callable) -> Callable:
+    def get(self, key: str, fn: Callable = None) -> Union[str, bytes, int, float]:
         """
         Get the data from the cache
         :param key: The key of the data to get
