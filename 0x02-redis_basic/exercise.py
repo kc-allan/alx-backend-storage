@@ -4,7 +4,7 @@ This is a simple exercise to test your understanding of Redis
 """
 import redis
 import uuid
-from typing import Union
+from typing import Union, Callable
 
 
 class Cache:
@@ -28,3 +28,29 @@ class Cache:
         id = str(uuid.uuid4())
         self._redis.set(id, data)
         return id
+
+    def get(self, key: str, fn: Callable) -> Callable:
+        """
+        Get the data from the cache
+        :param key: The key of the data to get
+        :param fn: The function to apply to the data
+        :return: The data from the cache
+        """
+        data = self._redis.get(key)
+        return fn(data) if fn is not None else data
+
+    def get_str(self, key: str) -> str:
+        """
+        Get the data from the cache as a string
+        :param key: The key of the data to get
+        :return: The data from the cache as a string
+        """
+        return self.get(key, lambda d: d.decode("utf-8"))
+
+    def get_int(self, key: str) -> int:
+        """
+        Get the data from the cache as an integer
+        :param key: The key of the data to get
+        :return: The data from the cache as an integer
+        """
+        return self.get(key, int)
