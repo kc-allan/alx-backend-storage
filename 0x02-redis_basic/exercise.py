@@ -25,5 +25,5 @@ class Cache:
         :return: The ID of the stored data
         """
         id = str(uuid.uuid4())
-        self._redis.sadd(id, data)
+        self._redis.set(id, data)
         return id
